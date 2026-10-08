@@ -341,12 +341,13 @@ function clearEntities() {
   entities.length=0;
 }
 function visible(id, show) { $(id).classList.toggle('hidden',!show); }
+function mobileChase(){return innerWidth/innerHeight<1.2||(typeof matchMedia==='function'&&matchMedia('(pointer:coarse)').matches);}
 function start() {
   playerName=($('player-name').value||'').trim().slice(0,24);
   if(!playerName){$('player-name').focus();return;}
   try{localStorage.setItem('bikeman-player',playerName);}catch{}
   clearEntities();state='boarding';accelerating=false;braking=false;boost=false;
-  prologue.pickup();for(const id of ['intro','end','won','paused','hud','touch','speedometer','course-counter','record-panel'])visible(id,false);
+  prologue.pickup();for(const id of ['intro','end','won','paused','hud','speedometer','course-counter','record-panel'])visible(id,false);visible('touch',true);
 }
 function beginRide() {
   overheadBlend=0;
@@ -362,7 +363,7 @@ function beginRide() {
   for(const m of markings)m.position.z=m.userData.startZ;
   carNumber=0;opening.begin();
   cyclist.position.set(0,0,0); cyclist.rotation.set(0,0,0);
-  camera.position.set(0,3.3,6.7);camera.lookAt(0,2.05,-24);camera.fov=72;camera.updateProjectionMatrix();
+  camera.position.set(0,mobileChase()?3.8:3.3,mobileChase()?11:6.7);camera.lookAt(0,2.05,-24);camera.fov=72;camera.updateProjectionMatrix();
   for(const id of ['intro','end','paused','won']) visible(id,false);
   for(const id of ['hud','touch','ride-hint','speedometer','course-counter','record-panel']) visible(id,true);
   visible('bus-warning',false); chirp(360,.1);
@@ -591,14 +592,15 @@ function animate(now) {
   const view=crashing||cinematic?'chase':finale.view;
   const carriageway=lane<=-2?-11.5:0;
   const crossing=finale.stage==='escape'||finale.stage==='return';
-  const narrowView=innerWidth/innerHeight<1.2;
+  const narrowView=mobileChase();
+  const chaseY=narrowView?3.8:3.3,chaseZ=narrowView?11:6.7;
   const followX=crossing||narrowView?cyclist.position.x:carriageway+(cyclist.position.x-carriageway)*.3;
   const lookX=crossing||narrowView?cyclist.position.x:carriageway+(cyclist.position.x-carriageway)*.18;
   if(state==='running')overheadBlend=THREE.MathUtils.clamp(overheadBlend+(view==='top'?dt:-dt)/1.6,0,1);
   const topBlend=crashing||cinematic||view==='side'?0:overheadBlend;
   const smoothTop=topBlend*topBlend*(3-2*topBlend);
   camera.up.set(0,1-smoothTop,-smoothTop).normalize();
-  const desired=crashing?new THREE.Vector3(focus.x*.6,5.5,12):view==='top'?new THREE.Vector3(0,46,-27):view==='side'?new THREE.Vector3(18,7,-14):new THREE.Vector3(introOffset+(cinematic?cyclist.position.x*.3*blend:followX),3.3+finale.elevation,cinematic?9-2.3*blend:6.7);
+  const desired=crashing?new THREE.Vector3(focus.x*.6,5.5,12):view==='top'?new THREE.Vector3(0,46,-27):view==='side'?new THREE.Vector3(18,7,-14):new THREE.Vector3(introOffset+(cinematic?cyclist.position.x*.3*blend:followX),chaseY+finale.elevation,cinematic?(narrowView?13-2*blend:9-2.3*blend):chaseZ);
   const orbit=crashing?null:finale.orbitProgress;
   if(orbit!==null){
     if(!matrixFrom)matrixFrom=camera.position.clone();
@@ -606,7 +608,7 @@ function animate(now) {
     desired.copy(matrixFrom).lerp(new THREE.Vector3(18,7,-14),p);
     desired.x+=Math.sin(orbit*Math.PI)*7;desired.y+=Math.sin(orbit*Math.PI)*3;desired.z+=Math.sin(orbit*Math.PI)*5;
   }else matrixFrom=null;
-  if(topBlend>0){desired.set(followX,3.3+finale.elevation,6.7).lerp(new THREE.Vector3(0,46,-27),smoothTop);}
+  if(topBlend>0){desired.set(followX,chaseY+finale.elevation,chaseZ).lerp(new THREE.Vector3(0,46,-27),smoothTop);}
   if(state==='boarding'||finale.stage==='freeze')camera.position.copy(desired);else camera.position.lerp(desired,1-Math.exp(-dt*(crossing||narrowView?15:3)));
   if(narrowView&&!cinematic&&!crashing&&view==='chase'&&topBlend===0)camera.position.x=cyclist.position.x;
   if(crashing)camera.lookAt(focus);else if(view==='side'){

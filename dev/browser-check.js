@@ -3,8 +3,9 @@ window.addEventListener('unhandledrejection',e=>{(window.browserCheckErrors??=[]
 window.addEventListener('load',()=>{
   document.getElementById('player-name').value='Browser test';
   document.getElementById('start').click();
+  const controlsAtStart=!document.getElementById('touch').classList.contains('hidden');
   const check=setInterval(()=>{
-    if(document.getElementById('touch').classList.contains('hidden'))return;
+    if(document.getElementById('speedometer').classList.contains('hidden'))return;
     clearInterval(check);
     document.getElementById('right').click();
     document.getElementById('jump').click();
@@ -13,7 +14,7 @@ window.addEventListener('load',()=>{
     const mobile=innerWidth<=700;
     const visibleButtons=buttons.every(b=>{const r=b.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight&&r.width>=44;});
     const hintsHidden=['opening-cue','ride-hint','median-warning','encounter-warning','bus-warning','accelerate-sign'].every(id=>getComputedStyle(document.getElementById(id)).display==='none');
-    const result={hintsHidden,viewport:[innerWidth,innerHeight],errors:window.browserCheckErrors||[],started:document.getElementById('intro').classList.contains('hidden'),canvas:[document.getElementById('game').width,document.getElementById('game').height],touchFits:!mobile||visibleButtons,publicDebugAbsent:!document.getElementById('debug-menu'),speed:document.getElementById('speed-reading').textContent};
+    const result={controlsAtStart,hintsHidden,viewport:[innerWidth,innerHeight],errors:window.browserCheckErrors||[],started:document.getElementById('intro').classList.contains('hidden'),canvas:[document.getElementById('game').width,document.getElementById('game').height],touchFits:!mobile||visibleButtons,publicDebugAbsent:!document.getElementById('debug-menu'),speed:document.getElementById('speed-reading').textContent};
     const pre=document.createElement('pre');pre.id='browser-check-result';pre.hidden=true;pre.textContent=JSON.stringify(result);document.body.append(pre);
   },250);
 });

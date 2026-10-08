@@ -32,3 +32,5 @@ body:has(#intro:not(.hidden))::before{content:'';position:fixed;inset:0;backgrou
 
 /* Gameplay communicates obstacles through the scene, without hint overlays. */
 #opening-cue,#ride-hint,#median-warning,#encounter-warning,#bus-warning,#accelerate-sign{display:none!important}
+
+@media(max-width:700px),(pointer:coarse){.touch{grid-template-columns:76px 1fr 76px}.touch #jump{grid-column:2;grid-row:2}.touch #right,.touch #boost{grid-column:3}}
