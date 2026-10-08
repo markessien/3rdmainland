@@ -14,3 +14,5 @@
 - Verify the game locally, including static asset/module loading, mobile and desktop behavior, and relevant gameplay tests before committing changes.
 - Commit and push requested verified changes to the GitHub repository's `main` branch. Confirm the remote commit matches the local commit.
 - Preserve the correction-log rules in `.mebasic/instructions.md`; do not rewrite that file unless explicitly requested.
+
+- Do not display gameplay hint or instruction overlays during riding (lane directions, obstacle warnings, control reminders, or acceleration prompts). Keep controls and game stats visible.

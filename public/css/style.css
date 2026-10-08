@@ -29,3 +29,6 @@ body:has(#intro:not(.hidden))::before{content:'';position:fixed;inset:0;backgrou
 
 .touch button{display:flex;align-items:center;justify-content:center;padding:0;line-height:1;user-select:none;-webkit-user-select:none}.touch svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
 @media(max-width:700px),(pointer:coarse){.touch{display:grid;grid-template-columns:76px 1fr 64px 76px;grid-template-rows:64px 76px;gap:10px 8px;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));align-items:center;justify-items:center}.touch button{width:64px;height:64px;font-size:11px}.touch #left,.touch #right{width:76px;height:76px}.touch #left{grid-column:1;grid-row:2}.touch #brake{grid-column:1;grid-row:1}.touch #jump{grid-column:3;grid-row:2}.touch #right{grid-column:4;grid-row:2}.touch #boost{grid-column:4;grid-row:1;width:76px;font-size:10px}.touch button:hover{transform:none}.touch button:active{transform:scale(.95)}}
+
+/* Gameplay communicates obstacles through the scene, without hint overlays. */
+#opening-cue,#ride-hint,#median-warning,#encounter-warning,#bus-warning,#accelerate-sign{display:none!important}

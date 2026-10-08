@@ -22,7 +22,7 @@ try{
     await call('Page.navigate',{url:'http://127.0.0.1:5175/verify/'});
     let result;const deadline=Date.now()+30000;
     while(Date.now()<deadline){const reply=await call('Runtime.evaluate',{expression:"document.getElementById('browser-check-result')?.textContent",returnByValue:true});if(reply.result.value){result=JSON.parse(reply.result.value);break;}await new Promise(resolve=>setTimeout(resolve,250));}
-    assert.ok(result,`${name} browser completed`);assert.deepEqual(result.errors,[],`${name} no runtime errors`);console.log(JSON.stringify(result));assert.ok(result.started&&result.touchFits&&result.publicDebugAbsent,`${name} starts and controls fit`);assert.ok(result.canvas[0]>0&&result.canvas[1]>0);
+    assert.ok(result,`${name} browser completed`);assert.deepEqual(result.errors,[],`${name} no runtime errors`);console.log(JSON.stringify(result));assert.ok(result.started&&result.touchFits&&result.publicDebugAbsent&&result.hintsHidden,`${name} starts and controls fit`);assert.ok(result.canvas[0]>0&&result.canvas[1]>0);
     const shot=await call('Page.captureScreenshot',{format:'png'});await fs.writeFile(new URL(`../.browser-test/${name}.png`,import.meta.url),Buffer.from(shot.data,'base64'));
     console.log(`PASS: ${name} ${result.viewport.join('×')} renders, starts, and fits controls without JavaScript errors.`);
   }

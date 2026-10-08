@@ -12,7 +12,8 @@ window.addEventListener('load',()=>{
     const buttons=[...touch.querySelectorAll('button')];
     const mobile=innerWidth<=700;
     const visibleButtons=buttons.every(b=>{const r=b.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight&&r.width>=44;});
-    const result={viewport:[innerWidth,innerHeight],errors:window.browserCheckErrors||[],started:document.getElementById('intro').classList.contains('hidden'),canvas:[document.getElementById('game').width,document.getElementById('game').height],touchFits:!mobile||visibleButtons,publicDebugAbsent:!document.getElementById('debug-menu'),speed:document.getElementById('speed-reading').textContent};
+    const hintsHidden=['opening-cue','ride-hint','median-warning','encounter-warning','bus-warning','accelerate-sign'].every(id=>getComputedStyle(document.getElementById(id)).display==='none');
+    const result={hintsHidden,viewport:[innerWidth,innerHeight],errors:window.browserCheckErrors||[],started:document.getElementById('intro').classList.contains('hidden'),canvas:[document.getElementById('game').width,document.getElementById('game').height],touchFits:!mobile||visibleButtons,publicDebugAbsent:!document.getElementById('debug-menu'),speed:document.getElementById('speed-reading').textContent};
     const pre=document.createElement('pre');pre.id='browser-check-result';pre.hidden=true;pre.textContent=JSON.stringify(result);document.body.append(pre);
   },250);
 });
