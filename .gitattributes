@@ -1,2 +1,4 @@
 # Vendored Three.js preserves the upstream distribution and license.
 public/vendor/* linguist-vendored=true whitespace=-blank-at-eol,-blank-at-eof
+
+dev/git-hooks/* text eol=lf

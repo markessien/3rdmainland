@@ -347,7 +347,7 @@ function start() {
   if(!playerName){$('player-name').focus();return;}
   try{localStorage.setItem('bikeman-player',playerName);}catch{}
   clearEntities();state='boarding';accelerating=false;braking=false;boost=false;
-  prologue.pickup();for(const id of ['intro','end','won','paused','hud','speedometer','course-counter','record-panel'])visible(id,false);visible('touch',true);
+  prologue.pickup();for(const id of ['intro','end','won','paused','hud','speedometer','course-counter','record-panel','game-version'])visible(id,false);visible('touch',true);
 }
 function beginRide() {
   overheadBlend=0;
@@ -364,7 +364,7 @@ function beginRide() {
   carNumber=0;opening.begin();
   cyclist.position.set(0,0,0); cyclist.rotation.set(0,0,0);
   camera.position.set(0,mobileChase()?3.8:3.3,mobileChase()?11:6.7);camera.lookAt(0,2.05,-24);camera.fov=72;camera.updateProjectionMatrix();
-  for(const id of ['intro','end','paused','won']) visible(id,false);
+  for(const id of ['intro','end','paused','won','game-version']) visible(id,false);
   for(const id of ['hud','touch','ride-hint','speedometer','course-counter','record-panel']) visible(id,true);
   visible('bus-warning',false); chirp(360,.1);
   $('remaining').textContent='11';

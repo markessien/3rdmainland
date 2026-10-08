@@ -16,8 +16,8 @@ try{
     await call('Emulation.setTouchEmulationEnabled',{enabled:mobile});
     await call('Page.navigate',{url:'http://127.0.0.1:5173/'});
     await new Promise(resolve=>setTimeout(resolve,800));
-    const intro=await call('Runtime.evaluate',{expression:"JSON.stringify({panelsHidden:['speedometer','course-counter','record-panel'].every(id=>getComputedStyle(document.getElementById(id)).display==='none'),title:document.querySelector('#intro h1').textContent,footerAbsent:!document.querySelector('footer')})",returnByValue:true});
-    const opening=JSON.parse(intro.result.value);assert.ok(opening.panelsHidden&&opening.footerAbsent);assert.equal(opening.title,'Can you do Okada on 3rd mainland bridge?');
+    const intro=await call('Runtime.evaluate',{expression:"JSON.stringify({panelsHidden:['speedometer','course-counter','record-panel'].every(id=>getComputedStyle(document.getElementById(id)).display==='none'),title:document.querySelector('#intro h1').textContent,footerAbsent:!document.querySelector('footer'),version:document.getElementById('game-version').textContent,versionVisible:getComputedStyle(document.getElementById('game-version')).display!=='none'})",returnByValue:true});
+    const opening=JSON.parse(intro.result.value);assert.ok(opening.panelsHidden&&opening.footerAbsent&&opening.versionVisible);assert.equal(opening.version,`Version ${JSON.parse(await fs.readFile(new URL('../package.json',import.meta.url),'utf8')).version}`);assert.equal(opening.title,'Can you do Okada on 3rd mainland bridge?');
     const introShot=await call('Page.captureScreenshot',{format:'png'});await fs.writeFile(new URL(`../.browser-test/intro-${name}.png`,import.meta.url),Buffer.from(introShot.data,'base64'));
     await call('Page.navigate',{url:'http://127.0.0.1:5175/verify/'});
     let result;const deadline=Date.now()+30000;

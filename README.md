@@ -43,3 +43,7 @@ Open http://127.0.0.1:5173/debug/. Production serving must expose only public/, 
 ## Public repository rules
 
 See agents.md. Never commit secrets, credentials, private data, environment files, logs, or browser profiles. Keep private local files ignored. Inspect staged paths and scan for secrets before pushing to main.
+
+## Release version
+
+The landing page displays the release version from package.json. Enable automatic patch increments for commits that change public/ with `git config core.hooksPath dev/git-hooks`. Run `node dev/bump-version.mjs` before local release verification; the hook is idempotent relative to the previous commit. This is a development helper, not a build step. Static hosting still serves public/ directly.
