@@ -1,4 +1,4 @@
-import {createAftermath} from './aftermath.js?v=1.0.2';
+import {createAftermath} from './aftermath.js?v=1.0.3';
 export function createFinale({THREE,scene,cyclist,passenger,box,sphere,rod,mesh,obstacle,entities,getDistance,getLane,getSpeed,setDistance,setLane,onFailure,stopPolice,chirp}) {
   const aftermath=createAftermath({THREE,scene,cyclist,box,sphere,rod,mesh,obstacle,entities,getDistance,getLane,onFailure,chirp});
   const clamp=THREE.MathUtils.clamp,lerp=THREE.MathUtils.lerp;

@@ -33,6 +33,6 @@ body:has(#intro:not(.hidden))::before{content:'';position:fixed;inset:0;backgrou
 /* Gameplay communicates obstacles through the scene, without hint overlays. */
 #opening-cue,#ride-hint,#median-warning,#encounter-warning,#bus-warning,#accelerate-sign{display:none!important}
 
-@media(max-width:700px),(pointer:coarse){.touch{grid-template-columns:76px 1fr 76px}.touch #jump{grid-column:2;grid-row:2}.touch #right,.touch #boost{grid-column:3}}
+@media(max-width:700px),(pointer:coarse){.touch{grid-template-columns:76px 1fr 64px 76px}.touch #jump{grid-column:3;grid-row:1}.touch #right,.touch #boost{grid-column:4}}
 
 #game-version{position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);padding:5px 10px;border-radius:20px;background:#f5f5e9b3;color:#173e3a;font-size:11px;font-weight:600;letter-spacing:.5px;pointer-events:none}
