@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import * as THREE from 'three';
-import {createFinale} from './app/src/finale.js';
+import * as THREE from './public/vendor/three.module.js';
+import {loadSceneModule} from './dev/load-modules.mjs';
+const {module:{createFinale}}=await loadSceneModule('finale');
 globalThis.document={getElementById:()=>({textContent:''})};
 function fixture(){
   const scene=new THREE.Scene(),cyclist=new THREE.Group(),passenger=new THREE.Group(),entities=[],failures=[];

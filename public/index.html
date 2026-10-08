@@ -4,22 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#173e3a" />
-  <title>Bikeman — Lagos Overdrive</title>
-  <script type="module" crossorigin src="./assets/index-aHgCqV1o.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CQDeiGno.css">
+  <link rel="canonical" href="https://3rdmainland.start.ng/" />
+  <title>3rd Mainland Biker</title>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <canvas id="game" aria-label="High speed motorbike racing on Third Mainland Bridge"></canvas>
-  <header><a class="brand" href="/">bike<span>man</span><i>↗</i></a><div class="location"><span class="live-dot"></span> THIRD MAINLAND BRIDGE <span class="route">LAGOS · NG</span></div><button id="sound" class="icon-button" title="Toggle sound" aria-label="Enable sound">♪ <span>OFF</span></button></header>
+  <header><a class="brand" href="./">3rd Mainland Biker</a><button id="sound" class="icon-button" title="Toggle sound" aria-label="Enable sound">♪ <span>OFF</span></button></header>
   <main><div id="record-panel"><span>HIGH SCORE</span><strong id="high-score">0 m</strong><small id="high-score-name">Rider</small></div>
-    <details id="debug-menu" open><summary>DEBUG CHECKPOINTS</summary><label for="debug-checkpoint">Start at a scene</label><select id="debug-checkpoint" aria-label="Debug start checkpoint">
-      <optgroup label="Bridge opening"><option value="opening">Opening / full route</option><option value="truck">Falling truck</option><option value="median">Median blockade</option><option value="lamp">Falling lamp</option><option value="holes">Pothole pairs</option><option value="bus">Bonfire + crossing bus</option></optgroup>
-      <optgroup label="Passengers and police"><option value="slalom">Ten swerving cars</option><option value="women">Roadside women</option><option value="police">Wheelie onto police pickup</option><option value="pursuit">Police pursuit + van</option></optgroup>
-      <optgroup label="Escape and race"><option value="escape">Gap into oncoming traffic</option><option value="oncoming">Oncoming carriageway</option><option value="return">Gap back to right</option><option value="pole">Woman jumps onto pole</option><option value="race">Two-car race</option><option value="empty">Empty stretch</option><option value="dispatch">Dispatch riders</option></optgroup>
-      <optgroup label="Views and later scenes"><option value="detour">Right-hand ramp / dead end</option><option value="merge">Difficult traffic merge</option><option value="top">Overhead traffic puzzle</option><option value="vendors">Road sellers / camera switch</option><option value="trucks">Side-view truck jumps</option><option value="normal">Return to standard view</option></optgroup>
-      <optgroup label="Plane and storm"><option value="plane">Plane grab + burning truck</option><option value="quiet">Turtle + mermaid</option><option value="storm">Rain + flooded holes</option></optgroup>
-    </select><button id="debug-go">START HERE ↗</button><button id="debug-retry">RETRY SCENE ↺</button><small id="debug-current">Normal run</small><p>Test runs retry this scene and do not change high scores.</p></details>
-    <div id="course-counter"><span>TO THE FINISH</span><strong><span id="remaining">11</span><small> km</small></strong></div>
+<div id="course-counter"><span>TO THE FINISH</span><strong><span id="remaining">11</span><small> km</small></strong></div>
     <div id="speedometer" aria-label="Speedometer"><span>SPEED</span><strong id="speed-reading">0</strong><small>KM/H</small></div>
     <div id="hud" class="hidden"><button id="pause" class="icon-button" aria-label="Pause game">Ⅱ</button></div>
     <section id="intro" class="panel"><div class="eyebrow"><span></span> LAGOS / THIRD MAINLAND BRIDGE</div><h1>Lagos.<br>Full throttle<span>.</span></h1><p>Wave a bike down. Hop on. Head up to the bridge.<br>Hold ↑ to accelerate without a limit. Hold ↓ to brake.</p><label class="name-label" for="player-name">YOUR NAME</label><input id="player-name" maxlength="24" autocomplete="nickname" placeholder="Your name" aria-label="Your name" /><button id="start" class="primary">ENTER - CATCH A BIKE <span>↗</span></button><div class="controls"><kbd>←</kbd><kbd>→</kbd><span>steer</span><kbd>↑</kbd><kbd>↓</kbd><span>speed / brake</span><kbd>SPACE</kbd><span>jump</span><kbd>P</kbd><span>pause</span></div></section>
@@ -31,8 +24,9 @@
     <div id="opening-cue" role="status"></div><div id="encounter-warning" class="encounter-warning hidden" role="status"></div>
     <div id="median-warning" class="median-warning hidden" role="status">MEDIAN LAMP AHEAD — STEER RIGHT!</div>
     <div id="ride-hint" class="ride-hint hidden">← → STEER &nbsp; / &nbsp; SPACE JUMP &nbsp; / &nbsp; SHIFT BOOST &nbsp; / &nbsp; P PAUSE</div>
-    <div id="touch" class="touch hidden"><button id="left" aria-label="Move left">←</button><button id="jump" aria-label="Jump">JUMP</button><button id="boost" aria-label="Hold to boost">BOOST</button><button id="right" aria-label="Move right">→</button></div>
+    <div id="touch" class="touch hidden"><button id="left" aria-label="Move left">←</button><button id="jump" aria-label="Jump">JUMP</button><button id="boost" aria-label="Hold to accelerate">BOOST</button><button id="brake" aria-label="Hold to brake or descend">BRAKE</button><button id="right" aria-label="Move right">→</button></div>
   </main>
   <footer><span>LAGOS OVERDRIVE / 01</span><span class="footer-right">THREE LANES. FULL THROTTLE. <i>✳</i></span></footer>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>

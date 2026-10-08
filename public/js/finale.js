@@ -214,26 +214,7 @@ export function createFinale({THREE,scene,cyclist,passenger,box,sphere,rod,mesh,
     }
   }
   return {
-    debugStart(name){
-      const d=getDistance();
-      cruiseResetPending=['empty','dispatch','detour','merge'].includes(name);
-      const skipped=Math.max(0,Math.floor((d+110)/70)-3);
-      nextIncoming=-110+skipped*70;incomingNumber=skipped;
-      if(name==='escape'){stage='escape';gap={hit:2460};cue('POLICE BEHIND! LEFT THROUGH THE MEDIAN GAP');}
-      if(name==='oncoming'){stage='oncoming';cue('WRONG CARRIAGEWAY — DODGE THE INCOMING CARS');}
-      if(name==='return'){stage='return';gap={hit:2960};cue('GAP AHEAD — CROSS BACK TO THE RIGHT CARRIAGEWAY');}
-      if(name==='pole')release();
-      if(name==='race'){passenger.visible=false;race();}
-      if(name==='empty'){stage='empty';emptyEnd=d+300;cue('OPEN ROAD — DISPATCH RIDERS NEXT');}
-      if(name==='dispatch')dispatch();
-      if(name==='detour')fork();
-      if(name==='merge'){setDistance(d-310);fork();setDistance(d);jumpedRamp=true;cue('BACK UP! MERGE THROUGH TRAFFIC — WATCH THE GAPS');}
-      if(name==='top')overhead();
-      if(name==='vendors'){topBase=d-120;vendors();}
-      if(name==='trucks'){topBase=d-400;sideStart();}
-      if(['plane','quiet','storm'].includes(name)){stage='aftermath';aftermath.start(name);}
-      if(name==='normal'){stage='done';finishedAt=d;cue('BACK TO CHASE VIEW — KEEP RIDING');}
-    },
+
     reset(){aftermath.reset();stage='waiting';nextIncoming=-110;incomingNumber=0;timer=0;raceLead=0;raceFailed=false;gap=null;drop=null;rivals=[];miniCars=[];platforms=[];landings=new Set();finishedAt=0;heavyTrafficMade=false;cruiseResetPending=false;cyclist.position.z=0;document.getElementById('accelerate-sign').hidden=true;},
     update(dt,bikeHeight){
       const d=getDistance();

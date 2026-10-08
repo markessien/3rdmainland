@@ -1,2 +1,2 @@
-# Bundled output includes shader strings whose whitespace comes from Three.js.
-public/assets/* linguist-generated=true whitespace=-blank-at-eol,-blank-at-eof
+# Vendored Three.js preserves the upstream distribution and license.
+public/vendor/* linguist-vendored=true whitespace=-blank-at-eol,-blank-at-eof

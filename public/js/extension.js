@@ -118,16 +118,7 @@ export function createExtension({THREE,scene,cyclist,box,sphere,rod,mesh,obstacl
   }
   return {
     passenger,
-    debugStart(name){
-      if(name==='slalom'){beginSlalom();return;}
-      if(name==='women'){rescue();return;}
-      pickedUp=true;passenger.visible=true;checkpointMade=true;
-      if(name==='police'){checkpoint();return;}
-      if(name==='pursuit'){stage=5;chase();cue('POLICE IN PURSUIT — KEEP MOVING');return;}
-      stage=6;
-      if(['escape','oncoming','return'].includes(name))chase();
-      else{chasing=false;passenger.visible=name==='pole';}
-    },
+
     reset(){stage=0;boarding=-1;pickedUp=false;declined=false;roadside=null;checkpointMade=false;chasing=false;vanMade=false;passenger.visible=false;passenger.position.set(-.16,0,1.35);passenger.getObjectByName('round-hips').scale.set(1,1,1);},
     advance(d){if(stage===0&&d>=1260)beginSlalom();if(stage===1&&d>=1980)rescue();},
     update(dt,time){
