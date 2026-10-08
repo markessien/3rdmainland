@@ -18,3 +18,4 @@
 - Do not display gameplay hint or instruction overlays during riding (lane directions, obstacle warnings, control reminders, or acceleration prompts). Keep controls and game stats visible.
 
 - Auto-increment the patch version once per commit containing game changes. Keep package.json and the landing-page version label synchronized using node dev/bump-version.mjs. Enable the repository hook with git config core.hooksPath dev/git-hooks. Do not bump for no-op requests or documentation-only changes. Always state the current completed game version in the final reply.
+- Version every CSS entry, JavaScript entry, and local module import URL with the release number. Update these via the release helper so browser/CDN caches cannot mix releases.

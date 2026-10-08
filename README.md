@@ -47,3 +47,5 @@ See agents.md. Never commit secrets, credentials, private data, environment file
 ## Release version
 
 The landing page displays the release version from package.json. Enable automatic patch increments for commits that change public/ with `git config core.hooksPath dev/git-hooks`. Run `node dev/bump-version.mjs` before local release verification; the hook is idempotent relative to the previous commit. This is a development helper, not a build step. Static hosting still serves public/ directly.
+
+Release numbering also updates CSS and all local module URLs with `?v=<version>` to prevent stale mobile assets. HTML should always revalidate (Cache-Control: no-cache or max-age=0, must-revalidate); versioned assets can safely be cached.
