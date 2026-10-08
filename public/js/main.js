@@ -346,7 +346,7 @@ function start() {
   if(!playerName){$('player-name').focus();return;}
   try{localStorage.setItem('bikeman-player',playerName);}catch{}
   clearEntities();state='boarding';accelerating=false;braking=false;boost=false;
-  prologue.pickup();for(const id of ['intro','end','won','paused','hud','touch'])visible(id,false);
+  prologue.pickup();for(const id of ['intro','end','won','paused','hud','touch','speedometer','course-counter','record-panel'])visible(id,false);
 }
 function beginRide() {
   overheadBlend=0;
@@ -364,7 +364,7 @@ function beginRide() {
   cyclist.position.set(0,0,0); cyclist.rotation.set(0,0,0);
   camera.position.set(0,3.3,6.7);camera.lookAt(0,2.05,-24);camera.fov=72;camera.updateProjectionMatrix();
   for(const id of ['intro','end','paused','won']) visible(id,false);
-  for(const id of ['hud','touch','ride-hint']) visible(id,true);
+  for(const id of ['hud','touch','ride-hint','speedometer','course-counter','record-panel']) visible(id,true);
   visible('bus-warning',false); chirp(360,.1);
   $('remaining').textContent='11';
   visible('encounter-warning',false);
@@ -471,7 +471,7 @@ function animate(now) {
   if(state==='crashing'&&crash.update(dt))restartRide();
   if(riding) {
     // Speed is controlled by the player, with no upper clamp.
-    if(finale.movementSpeed===null)speed=Math.max(0,speed+((accelerating?55:0)+(boost?75:0)-(braking?95:0))*dt);
+    if(finale.movementSpeed===null&&!extension.boarding)speed=Math.max(START_SPEED,speed+((accelerating?55:0)+(boost?75:0)-(braking?95:0))*dt);
     distance=Math.min(COURSE_LENGTH,distance+(finale.movementSpeed??speed)*dt); spawnTimer-=dt;potholeTimer-=dt;
     opening.advance(distance);
     extension.advance(distance);extension.update(dt,elapsed);
@@ -591,8 +591,9 @@ function animate(now) {
   const view=crashing||cinematic?'chase':finale.view;
   const carriageway=lane<=-2?-11.5:0;
   const crossing=finale.stage==='escape'||finale.stage==='return';
-  const followX=crossing?cyclist.position.x:carriageway+(cyclist.position.x-carriageway)*.3;
-  const lookX=crossing?cyclist.position.x:carriageway+(cyclist.position.x-carriageway)*.18;
+  const narrowView=innerWidth/innerHeight<1.2;
+  const followX=crossing||narrowView?cyclist.position.x:carriageway+(cyclist.position.x-carriageway)*.3;
+  const lookX=crossing||narrowView?cyclist.position.x:carriageway+(cyclist.position.x-carriageway)*.18;
   if(state==='running')overheadBlend=THREE.MathUtils.clamp(overheadBlend+(view==='top'?dt:-dt)/1.6,0,1);
   const topBlend=crashing||cinematic||view==='side'?0:overheadBlend;
   const smoothTop=topBlend*topBlend*(3-2*topBlend);
@@ -606,7 +607,8 @@ function animate(now) {
     desired.x+=Math.sin(orbit*Math.PI)*7;desired.y+=Math.sin(orbit*Math.PI)*3;desired.z+=Math.sin(orbit*Math.PI)*5;
   }else matrixFrom=null;
   if(topBlend>0){desired.set(followX,3.3+finale.elevation,6.7).lerp(new THREE.Vector3(0,46,-27),smoothTop);}
-  if(state==='boarding'||finale.stage==='freeze')camera.position.copy(desired);else camera.position.lerp(desired,1-Math.exp(-dt*(crossing?12:3)));
+  if(state==='boarding'||finale.stage==='freeze')camera.position.copy(desired);else camera.position.lerp(desired,1-Math.exp(-dt*(crossing||narrowView?15:3)));
+  if(narrowView&&!cinematic&&!crashing&&view==='chase'&&topBlend===0)camera.position.x=cyclist.position.x;
   if(crashing)camera.lookAt(focus);else if(view==='side'){
     const p=orbit??1;
     camera.lookAt(new THREE.Vector3(lookX,2.05,-24).lerp(new THREE.Vector3(0,3,-14),p));

@@ -34,7 +34,7 @@ element('player-name').value='Test Rider';key('Enter');assert.equal(gameTest.sta
 assert.ok(renderedScene.getObjectByName('rider').visible,'Rider stays on arriving bike');
 assert.equal(renderedScene.getObjectByName('suited-passenger').visible,false,'Passenger has not boarded yet');
 let beforeRideCamera;
-for(let i=0;i<340&&gameTest.state==='boarding';i++){beforeRideCamera=gameTest.camera.position.clone();tick();}assert.equal(gameTest.state,'running');
+for(let i=0;i<380&&gameTest.state==='boarding';i++){beforeRideCamera=gameTest.camera.position.clone();tick();assert.equal(renderedScene.getObjectByName('motorbike').position.y,0,'Pickup and merge tires remain on asphalt');}assert.equal(gameTest.state,'running');
 assert.ok(beforeRideCamera.distanceTo(gameTest.camera.position)<.02,'Centered intro and first moving frame agree');
 assert.ok(renderedScene.getObjectByName('roadside-land').visible,'Sand remains at bridge entrance');
 assert.equal(element('remaining').textContent,'11');
@@ -197,6 +197,8 @@ const fastSpeed=gameTest.speed;assert.ok(fastSpeed>600,'Acceleration has no form
 listeners.get('keyup')({code:'ArrowUp'});key('ArrowDown');
 for(let i=0;i<20;i++){gameTest.holdAt(0);gameTest.safe();bike.position.x=30;tick(1,50);}
 assert.ok(gameTest.speed<fastSpeed-90,'Down arrow brakes');
+for(let i=0;i<160;i++){gameTest.holdAt(0);gameTest.safe();bike.position.x=30;tick(1,50);}
+assert.equal(gameTest.speed,65,'Prolonged braking stops at the starting speed');
 listeners.get('keyup')({code:'ArrowDown'});
 assert.ok(storage.get('bikeman-record')?.includes('Test Rider'),'Named high score persists');
 const recordBeforeDebug=storage.get('bikeman-record');
@@ -278,7 +280,7 @@ assert.ok(gameTest.speed>100,'Post-race ride can be above cruising speed');
 key('ArrowDown');assert.equal(gameTest.speed,65,'First post-race Down press immediately restores normal speed');
 tick(5);assert.equal(gameTest.speed,65,'Holding first Down press maintains cruising speed');
 listeners.get('keyup')({code:'ArrowDown'});key('ArrowDown');tick();
-assert.ok(gameTest.speed<65,'Subsequent Down press brakes normally');
+assert.equal(gameTest.speed,65,'Subsequent Down press cannot brake below starting speed');
 listeners.get('keyup')({code:'ArrowDown'});
 gameTest.startCheckpoint('oncoming');
 while(gameTest.distance<2900){
@@ -302,9 +304,9 @@ assert.equal(pursuers.length,2,'Both police vehicles follow into opposite lanes'
 assert.ok(pursuers.every(e=>e.collidable===false&&e.g.position.z>=8),'Police remain behind and cannot hit after crossing');
 assert.ok(gameTest.entities.some(e=>e.type==='oncoming-car'&&e.collidable!==false),'Incoming cars remain collision hazards');
 for(const e of gameTest.entities)if(e.type!=='police-chaser')e.collidable=false;
-key('ArrowDown');tick(300);listeners.get('keyup')({code:'ArrowDown'});
-assert.equal(gameTest.speed,0,'Can stop in opposite lanes');
-assert.equal(gameTest.state,'running','Police cannot cause a crash even when stopped');
+key('ArrowDown');for(let i=0;i<300;i++){gameTest.holdAt(2400);gameTest.safe();tick();}listeners.get('keyup')({code:'ArrowDown'});
+assert.equal(gameTest.speed,65,'Holding brake in opposite lanes maintains starting speed');
+assert.equal(gameTest.state,'running','Police cannot cause a crash at minimum speed');
 assert.ok(gameTest.extension.chasing&&pursuers.every(e=>e.g.position.z>=8),'Police continue visual pursuit');
 const incoming=gameTest.entities.find(e=>e.type==='oncoming-car');
 incoming.update=undefined;incoming.collidable=true;incoming.g.position.set(bike.position.x,0,0);
@@ -316,3 +318,9 @@ assert.equal(gameTest.finale.view,'side','Retry restores selected camera and pla
 assert.equal(storage.get('bikeman-record'),recordBeforeDebug,'Debug starts never inflate high score');
 console.log('PASS: opening route, deterministic slalom, pickup and skip branches, passenger wheelie, pickup-bed jump, progressively faster slalom, checkpoint removal, police van and pursuit, no later potholes, lagoon crashes, controls, 11 km win, and instant retry.');
 console.log('PASS: all 23 debug checkpoints, state and camera restoration, safe starts, selected-scene retry, and high-score isolation.');
+
+// Keep the whole bike visible while steering onto either edge in portrait view.
+globalThis.innerWidth=390;globalThis.innerHeight=844;
+gameTest.startCheckpoint('opening');gameTest.camera.aspect=390/844;gameTest.camera.updateProjectionMatrix();
+for(const lane of [2,-1,2]){moveTo(lane);for(let i=0;i<90;i++){gameTest.holdAt(0);gameTest.safe();tick();gameTest.camera.updateMatrixWorld();renderedScene.updateMatrixWorld();for(const point of [new THREE.Vector3(0,.55,1.05),new THREE.Vector3(0,2.85,0)]){point.applyMatrix4(bike.matrixWorld).project(gameTest.camera);assert.ok(Math.abs(point.x)<.95&&Math.abs(point.y)<.95,`Mobile shoulder bike stays within the frame: ${lane} ${i} ${point.x} ${point.y}`);}}}
+console.log('PASS: portrait bike framing through right lane and left median steering.');

@@ -11,22 +11,21 @@
 <body>
   <canvas id="game" aria-label="High speed motorbike racing on Third Mainland Bridge"></canvas>
   <header><a class="brand" href="./">3rd Mainland Biker</a><button id="sound" class="icon-button" title="Toggle sound" aria-label="Enable sound">♪ <span>OFF</span></button></header>
-  <main><div id="record-panel"><span>HIGH SCORE</span><strong id="high-score">0 m</strong><small id="high-score-name">Rider</small></div>
-<div id="course-counter"><span>TO THE FINISH</span><strong><span id="remaining">11</span><small> km</small></strong></div>
-    <div id="speedometer" aria-label="Speedometer"><span>SPEED</span><strong id="speed-reading">0</strong><small>KM/H</small></div>
+  <main><div id="record-panel" class="hidden"><span>HIGH SCORE</span><strong id="high-score">0 m</strong><small id="high-score-name">Rider</small></div>
+<div id="course-counter" class="hidden"><span>TO THE FINISH</span><strong><span id="remaining">11</span><small> km</small></strong></div>
+    <div id="speedometer" class="hidden" aria-label="Speedometer"><span>SPEED</span><strong id="speed-reading">0</strong><small>KM/H</small></div>
     <div id="hud" class="hidden"><button id="pause" class="icon-button" aria-label="Pause game">Ⅱ</button></div>
-    <section id="intro" class="panel"><div class="eyebrow"><span></span> LAGOS / THIRD MAINLAND BRIDGE</div><h1>Lagos.<br>Full throttle<span>.</span></h1><p>Wave a bike down. Hop on. Head up to the bridge.<br>Hold ↑ to accelerate without a limit. Hold ↓ to brake.</p><label class="name-label" for="player-name">YOUR NAME</label><input id="player-name" maxlength="24" autocomplete="nickname" placeholder="Your name" aria-label="Your name" /><button id="start" class="primary">ENTER - CATCH A BIKE <span>↗</span></button><div class="controls"><kbd>←</kbd><kbd>→</kbd><span>steer</span><kbd>↑</kbd><kbd>↓</kbd><span>speed / brake</span><kbd>SPACE</kbd><span>jump</span><kbd>P</kbd><span>pause</span></div></section>
+    <section id="intro" class="panel"><h1>Can you do Okada on 3rd mainland bridge?</h1><p>Let's see how good you are in riding bike.</p><label class="name-label" for="player-name">YOUR NAME</label><input id="player-name" maxlength="24" autocomplete="nickname" placeholder="Your name" aria-label="Your name" /><button id="start" class="primary">ENTER - CATCH A BIKE <span>↗</span></button><div class="controls"><kbd>←</kbd><kbd>→</kbd><span>steer</span><kbd>↑</kbd><kbd>↓</kbd><span>speed / brake</span><kbd>SPACE</kbd><span>jump</span><kbd>P</kbd><span>pause</span></div></section>
     <section id="end" class="modal hidden"><div class="eyebrow">THAT WAS A GOOD RIDE</div><h2>A little pit stop<span>.</span></h2><p>You met the traffic. The road is ready for another run.</p><button id="restart" class="primary">RIDE AGAIN <span>↗</span></button></section>
-    <section id="paused" class="modal hidden"><div class="eyebrow">TAKE A BREATHER</div><h2>Enjoy the view<span>.</span></h2><p>Your ride will be right here.</p><button id="resume" class="primary">KEEP ROLLING <span>↗</span></button></section>
+    <section id="paused" class="modal hidden"><h2>Oga Relax.</h2><p>What are you doing? Come and play game.</p><button id="resume" class="primary">KEEP ROLLING <span>↗</span></button></section>
     <section id="won" class="modal hidden"><div class="eyebrow">0 KM LEFT / BRIDGE COMPLETE</div><h2>You made it<span>!</span></h2><p>11 kilometres of Lagos chaos. Both riders made it across.</p><button id="play-again" class="primary">RIDE AGAIN <span>↗</span></button></section>
     <div id="bus-warning" class="bus-warning hidden"><strong>“OUT OF THE WAY!”</strong><span>ONCOMING DANFO · DODGE!</span></div>
     <div id="accelerate-sign" hidden>ACCELERATE! ↑</div>
     <div id="opening-cue" role="status"></div><div id="encounter-warning" class="encounter-warning hidden" role="status"></div>
     <div id="median-warning" class="median-warning hidden" role="status">MEDIAN LAMP AHEAD — STEER RIGHT!</div>
     <div id="ride-hint" class="ride-hint hidden">← → STEER &nbsp; / &nbsp; SPACE JUMP &nbsp; / &nbsp; SHIFT BOOST &nbsp; / &nbsp; P PAUSE</div>
-    <div id="touch" class="touch hidden"><button id="left" aria-label="Move left">←</button><button id="jump" aria-label="Jump">JUMP</button><button id="boost" aria-label="Hold to accelerate">BOOST</button><button id="brake" aria-label="Hold to brake or descend">BRAKE</button><button id="right" aria-label="Move right">→</button></div>
+    <div id="touch" class="touch hidden"><button id="left" aria-label="Move left"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M26 16H6M15 7l-9 9 9 9"/></svg></button><button id="jump" aria-label="Jump">JUMP</button><button id="boost" aria-label="Hold to accelerate">ACCELERATE</button><button id="brake" aria-label="Hold to brake or descend">BRAKE</button><button id="right" aria-label="Move right"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 16h20M17 7l9 9-9 9"/></svg></button></div>
   </main>
-  <footer><span>LAGOS OVERDRIVE / 01</span><span class="footer-right">THREE LANES. FULL THROTTLE. <i>✳</i></span></footer>
   <script type="module" src="./js/main.js"></script>
 </body>
 </html>

@@ -19,11 +19,11 @@ export function createPrologue({THREE,scene,box,sphere,rod,cyclist,rider,suitPas
     const bike=cyclist.clone(true);bike.name='passing-bike';bike.position.set([-3.2,0,3.2][i],0,20-i*22);bike.scale.setScalar(.8);bike.getObjectByName('suited-passenger').visible=false;scene.add(bike);passing.push(bike);
   }
   let timer=0,mode='waiting',blend=0,lastTravel=0;
-  function waiting(){timer=0;mode='waiting';land.visible=true;land.position.set(0,0,0);man.visible=true;man.position.set(6.1,0,1);cyclist.visible=false;for(const g of scenery){g.visible=true;g.position.z=g.userData.startZ-96;}}
+  function waiting(){timer=0;mode='waiting';land.visible=true;land.position.set(0,0,0);man.visible=true;man.position.set(6.1,0,1);man.rotation.set(0,0,0);cyclist.visible=false;for(const g of scenery){g.visible=true;g.position.z=g.userData.startZ-96;}}
   waiting();
   return{
     waiting,
-    pickup(){timer=0;mode='pickup';blend=0;lastTravel=0;passing.forEach(b=>b.visible=false);cyclist.visible=true;rider.visible=true;suitPassenger.visible=false;},
+    pickup(){timer=0;mode='pickup';blend=0;lastTravel=0;cyclist.rotation.set(0,0,0);man.rotation.set(0,0,0);suitPassenger.position.set(0,0,0);suitPassenger.rotation.set(0,0,0);passing.forEach(b=>b.visible=false);cyclist.visible=true;rider.visible=true;suitPassenger.visible=false;},
     update(dt,time){
       timer+=dt;
       if(mode==='waiting') {
@@ -31,21 +31,28 @@ export function createPrologue({THREE,scene,box,sphere,rod,cyclist,rider,suitPas
         passing.forEach((b,i)=>{b.visible=true;b.position.z-=dt*(20+i*4);if(b.position.z<-90)b.position.z=20;});
       } else if(mode==='pickup') {
         const stop=THREE.MathUtils.clamp(timer/1.2,0,1);
-        cyclist.position.set(4.5,0,THREE.MathUtils.lerp(35,0,stop*stop*(3-2*stop)));
+        const z=THREE.MathUtils.lerp(35,0,stop*stop*(3-2*stop));
+        const moved=timer<=dt?0:cyclist.position.z-z;
+        cyclist.position.set(4.5,0,z);wheels.forEach(w=>w.rotation.x-=moved/.56);
         arm.rotation.z=0;
-        if(timer>1.3){const p=THREE.MathUtils.clamp((timer-1.3)/.9,0,1);man.position.set(THREE.MathUtils.lerp(6.1,4.5,p),Math.sin(p*Math.PI)*1.5,p*.85);man.rotation.x=-p*.2;}
-        if(timer>=2.3){man.visible=false;suitPassenger.visible=true;mode='approach';timer=0;}
+        // Walk to the stopped bike, step onto the footrest, then swing into the seat.
+        if(timer>1.3&&timer<1.95){const p=THREE.MathUtils.clamp((timer-1.3)/.65,0,1);man.position.set(THREE.MathUtils.lerp(6.1,5.12,p),Math.sin(p*Math.PI*4)*.025,1-.15*p);man.rotation.z=Math.sin(p*Math.PI*4)*.025;}
+        if(timer>=1.95){const p=THREE.MathUtils.clamp((timer-1.95)/.9,0,1),q=p*p*(3-2*p);man.visible=false;suitPassenger.visible=true;suitPassenger.position.set(.62*(1-q),.24*Math.sin(p*Math.PI),0);suitPassenger.rotation.z=.16*Math.sin(p*Math.PI);}
+        if(timer>=2.85){suitPassenger.position.set(0,0,0);suitPassenger.rotation.set(0,0,0);mode='approach';timer=0;}
+
       } else if(mode==='approach') {
         const p=THREE.MathUtils.clamp(timer/3,0,1);
         blend=p*p*(3-2*p);
         // Bridge furniture is already ahead; it approaches as the camera travels.
-        cyclist.position.set(THREE.MathUtils.lerp(4.5,0,blend),Math.sin(p*Math.PI)*.45,0);cyclist.rotation.x=-Math.sin(p*Math.PI)*.12;
+        cyclist.position.set(THREE.MathUtils.lerp(4.5,0,blend),0,0);
+        // Tires stay on the asphalt. Steering follows the curved merge instead of lifting the bike.
+        cyclist.rotation.set(0,Math.atan2(9*p*(1-p),Math.max(8,65*p)),Math.sin(p*Math.PI)*.075);
         const travel=p*p*96;
         wheels.forEach(w=>w.rotation.x-=(travel-lastTravel)/.56);lastTravel=travel;
         land.position.z=travel;
         for(const g of scenery)g.position.z=g.userData.startZ-96+travel;
         for(const m of markings)m.position.z=m.userData.startZ-96+travel;
-        if(timer>=3){mode='done';cyclist.rotation.x=0;return true;}
+        if(timer>=3){mode='done';cyclist.rotation.set(0,0,0);return true;}
       }
       return false;
     },

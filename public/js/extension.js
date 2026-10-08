@@ -149,6 +149,7 @@ export function createExtension({THREE,scene,cyclist,box,sphere,rod,mesh,obstacl
     get fenced(){const d=getDistance();return d>=1260&&d<2030;},
     get active(){return stage>0&&stage<6;},
     get complete(){return stage===6;},
+    get boarding(){return boarding>=0&&!pickedUp;},
     get pickedUp(){return pickedUp;},
     get chasing(){return chasing;},
     stopChase(){chasing=false;},

@@ -16,8 +16,8 @@ Open http://127.0.0.1:5173/. This optional development server only serves public
 
 ## Controls
 
-- Desktop: Left/Right or A/D steer, Up accelerates, Down brakes, Space jumps, P/Escape pauses.
-- Mobile: touch arrows steer, JUMP jumps, hold BOOST to accelerate, hold BRAKE to slow down. Swiping also steers.
+- Desktop: Left/Right or A/D steer, Up accelerates, Down brakes to the starting speed, Space jumps, P/Escape pauses.
+- Mobile: touch arrows steer, JUMP jumps, hold ACCELERATE to accelerate, hold BRAKE to slow down. Swiping also steers.
 - After winning the race, the first brake press restores normal cruising speed.
 - In side view, Space jumps between truck platforms and Down/BRAKE descends faster.
 - Jump to grab the plane; press Space/JUMP after clearing the burning truck to drop back down.
