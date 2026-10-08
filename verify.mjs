@@ -324,3 +324,9 @@ globalThis.innerWidth=390;globalThis.innerHeight=844;
 gameTest.startCheckpoint('opening');gameTest.camera.aspect=390/844;gameTest.camera.updateProjectionMatrix();
 for(const lane of [2,-1,2]){moveTo(lane);key('Space');for(let i=0;i<90;i++){gameTest.holdAt(0);gameTest.safe();tick();gameTest.camera.updateMatrixWorld();renderedScene.updateMatrixWorld();const bounds=new THREE.Box3().setFromObject(bike);for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z]){const point=new THREE.Vector3(x,y,z).project(gameTest.camera);assert.ok(Math.abs(point.x)<.95&&Math.abs(point.y)<.95,`Mobile shoulder bike stays within the frame: ${lane} ${i} ${point.x} ${point.y}`);}}}
 console.log('PASS: portrait bike framing through right lane and left median steering.');
+
+gameTest.startCheckpoint('vendors');gameTest.holdAt(5100);gameTest.safe();tick();
+const entryArrow=renderedScene.getObjectByName('middle-lane-truck-arrow');assert.ok(entryArrow?.visible,'Middle-lane truck arrow appears before entry');assert.equal(entryArrow.parent.position.x,0,'Arrow points at the center truck');
+const arrowOpacity=entryArrow.children[1].material.opacity;gameTest.holdAt(5100);gameTest.safe();tick();assert.notEqual(entryArrow.children[1].material.opacity,arrowOpacity,'Truck arrow flashes');
+gameTest.startCheckpoint('trucks');for(let i=0;i<100;i++){gameTest.safe();tick();}assert.equal(renderedScene.getObjectByName('middle-lane-truck-arrow').visible,false,'Arrow disappears after truck entry');
+console.log('PASS: middle-lane truck-entry arrow appears, flashes, and clears after entry.');

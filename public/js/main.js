@@ -1,10 +1,10 @@
-import * as THREE from '../vendor/three.module.js?v=1.0.3';
-import { createEncounters } from './encounters.js?v=1.0.3';
-import { createOpening } from './opening.js?v=1.0.3';
-import { createPrologue } from './prologue.js?v=1.0.3';
-import { createCrash } from './crash.js?v=1.0.3';
-import { createExtension } from './extension.js?v=1.0.3';
-import { createFinale } from './finale.js?v=1.0.3';
+import * as THREE from '../vendor/three.module.js?v=1.0.4';
+import { createEncounters } from './encounters.js?v=1.0.4';
+import { createOpening } from './opening.js?v=1.0.4';
+import { createPrologue } from './prologue.js?v=1.0.4';
+import { createCrash } from './crash.js?v=1.0.4';
+import { createExtension } from './extension.js?v=1.0.4';
+import { createFinale } from './finale.js?v=1.0.4';
 
 const $ = id => document.getElementById(id);
 const scene = new THREE.Scene();

@@ -1,4 +1,4 @@
-import {createAftermath} from './aftermath.js?v=1.0.3';
+import {createAftermath} from './aftermath.js?v=1.0.4';
 export function createFinale({THREE,scene,cyclist,passenger,box,sphere,rod,mesh,obstacle,entities,getDistance,getLane,getSpeed,setDistance,setLane,onFailure,stopPolice,chirp}) {
   const aftermath=createAftermath({THREE,scene,cyclist,box,sphere,rod,mesh,obstacle,entities,getDistance,getLane,onFailure,chirp});
   const clamp=THREE.MathUtils.clamp,lerp=THREE.MathUtils.lerp;
@@ -208,9 +208,17 @@ export function createFinale({THREE,scene,cyclist,passenger,box,sphere,rod,mesh,
       }
       if(kind==='benz-911'){box(3,1.5,20,'#56806e',g,[0,2.05,0]);box(2,1,2,'#467568',g,[0,1.15,-14]);const badge=mesh(new THREE.TorusGeometry(.2,.035,6,12),'#ccd1c4',g,[0,1.6,-15.03]);for(let j=0;j<3;j++)rod([0,1.6,-15.04],[Math.sin(j*2.094)*.18,1.6+Math.cos(j*2.094)*.18,-15.04],.02,'#ccd1c4',g);}
       for(const x of [-1.6,1.6])for(const z of [-11,7]){const w=mesh(new THREE.CylinderGeometry(.5,.5,.2,12),'#19252d',g,[x,.5,z]);w.rotation.z=Math.PI/2;}
+      let entryArrow;
+      if(i===0){
+        entryArrow=new THREE.Group();entryArrow.name='middle-lane-truck-arrow';g.add(entryArrow);entryArrow.visible=false;
+        const shape=new THREE.Shape();shape.moveTo(-.28,2.5);shape.lineTo(.28,2.5);shape.lineTo(.28,1);shape.lineTo(.9,1);shape.lineTo(0,0);shape.lineTo(-.9,1);shape.lineTo(-.28,1);shape.closePath();
+        const geometry=new THREE.ShapeGeometry(shape);
+        for(const [color,scale,z] of [['#172733',1.15,0],['#ffe43b',1,.04]]){const arrow=new THREE.Mesh(geometry.clone(),new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,depthTest:false,transparent:true}));arrow.scale.set(scale,scale,1);arrow.position.z=z;arrow.renderOrder=20;entryArrow.add(arrow);}
+        geometry.dispose();
+      }
       const hit=sideBase+12+i*34;
       const e=add(g,'platform-truck',hit,{platform:true,kind,roof,width:1.8,radius:11,height:roof,collidable:false,keepUntil:sideBase+250});
-      e.update=()=>{g.position.z=getDistance()-hit+Math.sin((getDistance()-sideBase)/20+i)*1.8;};platforms.push(e);
+      e.update=(dt=0)=>{g.position.z=getDistance()-hit+Math.sin((getDistance()-sideBase)/20+i)*1.8;if(entryArrow){entryArrow.userData.time=(entryArrow.userData.time||0)+dt;entryArrow.visible=stage==='vendors'&&getDistance()>=topBase+290||stage==='freeze';entryArrow.position.set(0,roof+.5+Math.sin(entryArrow.userData.time*5)*.15,11.2);entryArrow.children[1].material.opacity=.4+.6*(.5+.5*Math.sin(entryArrow.userData.time*8));}};platforms.push(e);
     }
   }
   return {
