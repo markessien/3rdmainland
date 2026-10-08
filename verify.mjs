@@ -11,14 +11,14 @@ let frame,now=performance.now();globalThis.requestAnimationFrame=callback=>{fram
 globalThis.FakeRenderer=class{shadowMap={};setPixelRatio(){}setClearColor(){}setSize(){}render(scene){globalThis.renderedScene=scene;}};
 function tick(n=1,ms=16.667){for(let i=0;i<n;i++)frame(now+=ms);}
 function key(code){listeners.get('keydown')({code,repeat:false,preventDefault(){}});}
-const source=(await fs.readFile(new URL('./src/main.js',import.meta.url),'utf8'))
+const source=(await fs.readFile(new URL('./app/src/main.js',import.meta.url),'utf8'))
   .replace("from 'three'",`from '${import.meta.resolve('three')}'`)
-  .replace("from './encounters.js'",`from '${new URL('./src/encounters.js',import.meta.url).href}'`)
-  .replace("from './opening.js'",`from '${new URL('./src/opening.js',import.meta.url).href}'`)
-  .replace("from './prologue.js'",`from '${new URL('./src/prologue.js',import.meta.url).href}'`)
-  .replace("from './crash.js'",`from '${new URL('./src/crash.js',import.meta.url).href}'`)
-  .replace("from './extension.js'",`from '${new URL('./src/extension.js',import.meta.url).href}'`)
-  .replace("from './finale.js'",`from '${new URL('./src/finale.js',import.meta.url).href}'`)
+  .replace("from './encounters.js'",`from '${new URL('./app/src/encounters.js',import.meta.url).href}'`)
+  .replace("from './opening.js'",`from '${new URL('./app/src/opening.js',import.meta.url).href}'`)
+  .replace("from './prologue.js'",`from '${new URL('./app/src/prologue.js',import.meta.url).href}'`)
+  .replace("from './crash.js'",`from '${new URL('./app/src/crash.js',import.meta.url).href}'`)
+  .replace("from './extension.js'",`from '${new URL('./app/src/extension.js',import.meta.url).href}'`)
+  .replace("from './finale.js'",`from '${new URL('./app/src/finale.js',import.meta.url).href}'`)
   .replace('new THREE.WebGLRenderer(','new FakeRenderer(')
   +'\nglobalThis.gameTest={entities,encounters,medianLamps,opening,extension,finale,camera,finish,CHECKPOINTS,startCheckpoint,holdAt(d){distance=d;},get lane(){return lane},get speed(){return speed},get state(){return state},get distance(){return distance},pattern(d){const old=distance;distance=d;const cars=entities.filter(e=>e.type===\'slalom-car\');cars.forEach(e=>e.update(0,elapsed));const result=cars.map(e=>e.g.position.x);distance=old;return result;},safe(){for(const e of entities)e.collidable=false;}};';
 Math.random=()=>.5;
@@ -185,7 +185,7 @@ while(gameTest.distance<880){gameTest.safe();bike.position.x=3.2;tick();}
 key('Space');tick(20);
 const cut=gameTest.entities.find(e=>e.type==='pothole');cut.collidable=true;
 bike.position.x=cut.g.position.x;tick();assert.equal(gameTest.state,'crashing','Long potholes cannot be jumped');
-const html=await fs.readFile(new URL('./index.html',import.meta.url),'utf8');
+const html=await fs.readFile(new URL('./app/index.html',import.meta.url),'utf8');
 assert.ok(!html.includes('id="speed"')&&!html.includes('id="dodged"')&&!html.includes('id="encounter-progress"'),'Extra statistics removed');
 assert.ok(html.includes('id="player-name"')&&html.includes('id="record-panel"'),'Name prompt and high score exist');
 element('restart').onclick();

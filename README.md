@@ -21,6 +21,8 @@ npm run dev
 
 Open the URL printed by Vite (normally http://127.0.0.1:5173/). Build with `npm run build`. Run the gameplay verification with `node verify.mjs`.
 
+The source lives in `app/`. `npm run build` generates the complete static site in `public/`, including `public/index.html` and bundled assets. Serve or deploy `public/` as the web root. The generated site is committed so the repository can be deployed directly; rebuild it after source changes. Relative asset URLs also support hosting under a subdirectory.
+
 ## Controls
 
 - Enter: start pickup; replay after winning.
