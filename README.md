@@ -16,10 +16,10 @@ Open http://127.0.0.1:5173/. This optional development server only serves public
 
 ## Controls
 
-- Desktop: Left/Right or A/D steer, Up accelerates, Down brakes to the starting speed, Space jumps, P/Escape pauses.
+- Desktop: Left/Right or A/D steer, W/Up accelerates, S/Down brakes to the starting speed, Space jumps, P/Escape pauses.
 - Mobile: touch arrows steer, JUMP jumps, hold ACCELERATE to accelerate, hold BRAKE to slow down. Swiping also steers.
 - After winning the race, the first brake press restores normal cruising speed.
-- In side view, Space jumps between truck platforms and Down/BRAKE descends faster.
+- In side view, Space jumps between truck platforms and S/Down/BRAKE descends faster.
 - Jump to grab the plane; press Space/JUMP after clearing the burning truck to drop back down.
 
 The 11 km route includes traffic, a median escape, police pursuit, an oncoming convoy, racers, dispatch riders, an underwater ramp jump, overhead lane puzzles, running sellers, six moving truck types, a plane ride, a turtle and mermaid, and a lightning/puddle challenge. The distance counter reaches zero to win. Names and best scores stay in browser local storage.

@@ -330,3 +330,9 @@ const entryArrow=renderedScene.getObjectByName('middle-lane-truck-arrow');assert
 const arrowOpacity=entryArrow.children[1].material.opacity;gameTest.holdAt(5100);gameTest.safe();tick();assert.notEqual(entryArrow.children[1].material.opacity,arrowOpacity,'Truck arrow flashes');
 gameTest.startCheckpoint('trucks');for(let i=0;i<100;i++){gameTest.safe();tick();}assert.equal(renderedScene.getObjectByName('middle-lane-truck-arrow').visible,false,'Arrow disappears after truck entry');
 console.log('PASS: middle-lane truck-entry arrow appears, flashes, and clears after entry.');
+
+gameTest.startCheckpoint('opening');key('KeyA');assert.equal(gameTest.lane,0,'A steers left');key('KeyD');assert.equal(gameTest.lane,1,'D steers right');
+key('KeyW');for(let i=0;i<30;i++){gameTest.holdAt(0);gameTest.safe();tick();}assert.ok(gameTest.speed>65,'W accelerates');listeners.get('keyup')({code:'KeyW'});const wasdSpeed=gameTest.speed;gameTest.holdAt(0);gameTest.safe();tick();assert.equal(gameTest.speed,wasdSpeed,'Releasing W stops acceleration');
+key('KeyS');for(let i=0;i<60;i++){gameTest.holdAt(0);gameTest.safe();tick();}assert.equal(gameTest.speed,65,'S brakes to the starting speed');listeners.get('keyup')({code:'KeyS'});
+gameTest.startCheckpoint('empty');key('KeyW');tick(30);listeners.get('keyup')({code:'KeyW'});key('KeyS');assert.equal(gameTest.speed,65,'S also resets post-race cruising speed');listeners.get('keyup')({code:'KeyS'});
+console.log('PASS: WASD steering, acceleration, key release, braking floor, and post-race speed reset.');

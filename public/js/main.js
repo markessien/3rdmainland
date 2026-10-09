@@ -1,10 +1,10 @@
-import * as THREE from '../vendor/three.module.js?v=1.0.4';
-import { createEncounters } from './encounters.js?v=1.0.4';
-import { createOpening } from './opening.js?v=1.0.4';
-import { createPrologue } from './prologue.js?v=1.0.4';
-import { createCrash } from './crash.js?v=1.0.4';
-import { createExtension } from './extension.js?v=1.0.4';
-import { createFinale } from './finale.js?v=1.0.4';
+import * as THREE from '../vendor/three.module.js?v=1.0.5';
+import { createEncounters } from './encounters.js?v=1.0.5';
+import { createOpening } from './opening.js?v=1.0.5';
+import { createPrologue } from './prologue.js?v=1.0.5';
+import { createCrash } from './crash.js?v=1.0.5';
+import { createExtension } from './extension.js?v=1.0.5';
+import { createFinale } from './finale.js?v=1.0.5';
 
 const $ = id => document.getElementById(id);
 const scene = new THREE.Scene();
@@ -409,22 +409,24 @@ function brake(){
 }
 $('brake').addEventListener('pointerdown',e=>{brake();$('brake').setPointerCapture(e.pointerId);});
 for(const event of ['pointerup','pointercancel','lostpointercapture'])$('brake').addEventListener(event,()=>{braking=false;});
+function keyboardAction(code){return ({KeyW:'ArrowUp',KeyA:'ArrowLeft',KeyS:'ArrowDown',KeyD:'ArrowRight'})[code]||code;}
 window.addEventListener('keydown', e=> {
-  if(e.code==='Enter'&&state==='intro'){e.preventDefault();start();return;}
+  const code=keyboardAction(e.code);
+  if(code==='Enter'&&state==='intro'){e.preventDefault();start();return;}
   if(document.activeElement===$('player-name'))return;
-  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space'].includes(e.code)) e.preventDefault();
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space'].includes(code)) e.preventDefault();
   if(e.repeat)return;
-  if(state==='running'&&finale.key(e.code)){e.preventDefault();return;}
-  if(e.code==='ArrowUp')accelerating=true;
-  if(e.code==='ArrowDown')brake();
-  if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&state==='running')boost=true;
-  if(e.code==='ArrowLeft'||e.code==='KeyA')move(-1);
-  if(e.code==='ArrowRight'||e.code==='KeyD')move(1);
-  if(e.code==='Space') { if(state==='intro')start();else if(state==='over'||state==='won')restartRide();else if(state==='running')jump(); }
-  if(e.code==='Enter'&&(state==='over'||state==='won'))restartRide();
-  if((e.code==='Escape'||e.code==='KeyP')&&(state==='running'||state==='paused'))pause();
+  if(state==='running'&&finale.key(code)){e.preventDefault();return;}
+  if(code==='ArrowUp')accelerating=true;
+  if(code==='ArrowDown')brake();
+  if((code==='ShiftLeft'||code==='ShiftRight')&&state==='running')boost=true;
+  if(code==='ArrowLeft')move(-1);
+  if(code==='ArrowRight')move(1);
+  if(code==='Space') { if(state==='intro')start();else if(state==='over'||state==='won')restartRide();else if(state==='running')jump(); }
+  if(code==='Enter'&&(state==='over'||state==='won'))restartRide();
+  if((code==='Escape'||code==='KeyP')&&(state==='running'||state==='paused'))pause();
 });
-window.addEventListener('keyup',e=>{if(e.code==='ShiftLeft'||e.code==='ShiftRight')boost=false;if(e.code==='ArrowUp')accelerating=false;if(e.code==='ArrowDown')braking=false;});
+window.addEventListener('keyup',e=>{const code=keyboardAction(e.code);if(code==='ShiftLeft'||code==='ShiftRight')boost=false;if(code==='ArrowUp')accelerating=false;if(code==='ArrowDown')braking=false;});
 window.addEventListener('blur',()=>{boost=false;accelerating=false;braking=false;if(state==='running')pause();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='running')pause();});
 let swipeX=null;
